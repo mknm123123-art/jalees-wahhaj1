@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جليس وهّاج</title>
+    <style>
+        :root {
+            --primary-bg: #1a2a44; /* لون مستوحى من شعار مصرف وهاج */
+            --box1-color: #4CAF50; /* أول متوسط */
+            --box2-color: #2196F3; /* ثاني متوسط */
+            --box3-color: #9C27B0; /* ثالث متوسط */
+            --text-color: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* تأثير مبعثر لشعار وهاج في الخلفية */
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background-image: url('https://via.placeholder.com/100/ffffff/000000?text=Wahaaj'); /* استبدل برابط شعار وهاج */
+            background-repeat: repeat;
+            background-size: 150px;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            max-width: 120px;
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.3));
+        }
+
+        h1 { font-size: 24px; margin-top: 10px; }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .container { padding: 20px; }
+
+        /* الخانات الرئيسية */
+        .phase-box {
+            margin-bottom: 20px;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: right;
+            cursor: pointer;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .phase-box:active { transform: scale(0.98); }
+
+        .box-1 { background: var(--box1-color); }
+        .box-2 { background: var(--box2-color); }
+        .box-3 { background: var(--box3-color); }
+
+        .book-count {
+            background: rgba(0,0,0,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        /* شاشة قائمة الكتب */
+        #books-screen, #form-screen, #admin-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary-bg);
+            z-index: 100;
+            overflow-y: auto;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .list-item {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* الجمل العشوائية في الأسفل */
+        #random-quote {
+            padding: 20px;
+            font-style: italic;
+            text-align: center;
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 20px;
+        }
+
+        .admin-trigger {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            font-size: 10px;
+            opacity: 0.5;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: none;
+        }
+
+        .btn-submit {
+            background: #ffc107;
+            color: #000;
+            font-weight: bold;
+            padding: 15px;
+            width: 100%;
+            border-radius: 8px;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-pattern"></div>
+
+<header>
+    <img src="https://via.placeholder.com/150x100?text=Jalees" alt="جليس" class="logo"> <h1>جليس وهّاج</h1>
+</header>
+
+<div class="top-nav">
+    <button class="nav-btn" onclick="alert('إحصائياتك الشخصية قيد التطوير')">نسيت ماذا قرأت؟</button>
+    <button class="nav-btn">لم أنتهِ منه بعد</button>
+</div>
+
+<div class="container">
+    <div class="phase-box box-1" onclick="showBooks('1')">
+        <span>أولى متوسط</span>
+        <span class="book-count">19 كتاباً</span>
+    </div>
+    <div class="phase-box box-2" onclick="showBooks('2')">
+        <span>ثاني متوسط</span>
+        <span class="book-count">15 كتاباً</span>
+    </div>
+    <div class="phase-box box-3" onclick="showBooks('3')">
+        <span>ثالث متوسط</span>
+        <span class="book-count">14 كتاباً</span>
+    </div>
+
+    <div id="random-quote"></div>
+</div>
+
+<div id="books-screen">
+    <div style="padding: 20px;">
+        <button onclick="closeScreen('books-screen')" style="color: white; background: none; border: none; font-size: 20px;">✕ رجوع</button>
+        <h2 id="phase-title"></h2>
+        <div id="books-list"></div>
+    </div>
+</div>
+
+<div id="form-screen">
+    <div style="padding: 20px;">
+        <button onclick="closeScreen('form-screen')" style="color: white; background: none; border: none; font-size: 20px;">✕ إلغاء</button>
+        <h2 id="selected-book-title"></h2>
+        <label>اسم الطالب:</label>
+        <select id="student-name"></select>
+        
+        <label>تاريخ الاستلام:</label>
+        <input type="date">
+        
+        <label>تاريخ التسليم:</label>
+        <input type="date">
+        
+        <label>هل قرأت الكتاب كاملاً؟</label>
+        <select>
+            <option>نعم</option>
+            <option>لا</option>
+        </select>
+        
+        <label>فائدة من الكتاب:</label>
+        <textarea rows="4"></textarea>
+        
+        <button class="btn-submit" onclick="submitBook()">إرسال البيانات</button>
+    </div>
+</div>
+
+<div class="admin-trigger" onclick="checkAdmin()">إحصائيات المالك</div>
+
+<script>
+    const quotes = [
+        "المتنبي: أعزُّ مكانٍ في الدُّنى سَرْجُ سابحٍ، وخيرُ جليسٍ في الأنامِ كتابُ.",
+        "ابن الجوزي: ما أشبع من مطالعة الكتب، وإذا رأيت كتاباً لم أقرأه، فكأني وقعت على كنز.",
+        "القراءة غذاء الروح ودواء العقل.",
+        "أحمد شوقي: أنا من بَدّلَ بالكُتبِ الصِّحَابَا، لم أجدْ لي وافياً إلا الكِتَابَا."
+    ];
+
+    const students = {
+        '1': ['أسامة المحاول', 'خالد جابر', 'سعد الجدوع'],
+        '2': ['تركي الموينع', 'حسام الحقباني', 'راشد اليوسف'],
+        '3': ['أحمد العمودي', 'أسامة الجطيل', 'خالد الحقباني']
+    };
+
+    const books = {
+        '3': ['أبي كما عرفته', 'الرجل المهزوم', 'السجين يهرب', 'الوسائل المفيدة', 'لأنك الله متسلل'],
+        '2': ['أبو هريرة', 'الرجال الثلاثة', 'القافلة', 'سوار أمي'],
+        '1': ['أبو تراب', 'أبو عبيدة الجراح', 'أسد اليرموك', 'جامع القرآن']
+    };
+
+    document.getElementById('random-quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+
+    function showBooks(phase) {
+        const screen = document.getElementById('books-screen');
+        const list = document.getElementById('books-list');
+        document.getElementById('phase-title').innerText = "كتب المرحلة: " + (phase == '1' ? 'الأولى' : phase == '2' ? 'الثانية' : 'الثالثة');
+        
+        list.innerHTML = '';
+        books[phase].forEach(book => {
+            let div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `<span>${book}</span><button onclick="openForm('${book}', '${phase}')" style="background: white; border:none; border-radius:5px; padding:5px 10px;">اختر</button>`;
+            list.appendChild(div);
+        });
+        screen.style.display = 'block';
+    }
+
+    function openForm(book, phase) {
+        document.getElementById('selected-book-title').innerText = book;
+        const studentSelect = document.getElementById('student-name');
+        studentSelect.innerHTML = '';
+        students[phase].forEach(s => {
+            let opt = document.createElement('option');
+            opt.innerText = s;
+            studentSelect.appendChild(opt);
+        });
+        document.getElementById('form-screen').style.display = 'block';
+    }
+
+    function closeScreen(id) { document.getElementById(id).style.display = 'none'; }
+
+    function submitBook() {
+        alert("تم حفظ البيانات بنجاح! شكراً لك يا بطل.");
+        closeScreen('form-screen');
+    }
+
+    function checkAdmin() {
+        let pass = prompt("كلمة مرور المالك:");
+        if (pass === "w1234") {
+            alert("مرحباً بك في لوحة الإحصائيات (قيد العمل)");
+        } else {
+            alert("تعذر الدخول، كلمة المرور خاطئة");
+        }
+    }
+</script>
+
+</body>
+</html>
